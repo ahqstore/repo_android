@@ -1,0 +1,9 @@
+[package]
+name = "ahqstore-android-repo"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ahqstore-types = "3.10.4"
+serde = { version = "1.0.217", features = ["derive"] }
+serde_json = "1.0.137"

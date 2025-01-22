@@ -1,0 +1,39 @@
+name: Update FDroid Manifest
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "*/20 * * * *"
+
+permissions: write-all
+
+jobs:
+  run:
+    name: Parse FDroid Manifest
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Rust
+        run: rustup install stable
+
+      - name: Build
+        run: |
+          sudo apt install curl
+          curl https://f-droid.org/repo/index-v2.json > index.json
+          cargo run --release
+
+      - name: Upload
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: .
+          author_name: GitHub Actions
+          author_email: actions@github.com
+          message: "Update Android repo"
+          push: true
+          committer_name: Actions Bot
+          committer_email: actions@github.com
