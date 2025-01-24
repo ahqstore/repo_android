@@ -1,6 +1,6 @@
-org.witness.sscphase1
-org.torproject.torservices
 info.guardianproject.ripple
 info.guardianproject.checkey
-net.opendasharchive.openarchive.release
+org.torproject.torservices
+org.witness.sscphase1
 info.guardianproject.pixelknot
+net.opendasharchive.openarchive.release
