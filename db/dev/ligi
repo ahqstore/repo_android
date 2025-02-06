@@ -1,10 +1,10 @@
 org.ligi.blexplorer
-org.ligi.ajsha
-org.ligi.satoshiproof
-org.ligi.vaporizercontrol
-org.ligi.gobandroid_hd
-org.ligi.materialteatimer
 org.ligi.gobandroidhd.ai.gnugo
+org.ligi.satoshiproof
+org.ligi.gobandroid_hd
 org.ligi.ipfsdroid
-org.ligi.passandroid
+org.ligi.ajsha
 org.ligi.survivalmanual
+org.ligi.materialteatimer
+org.ligi.vaporizercontrol
+org.ligi.passandroid
