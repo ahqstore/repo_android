@@ -1,6 +1,6 @@
-net.stargw.contactsimport
-net.stargw.contacts
-net.stargw.fok
 net.stargw.fx
-net.stargw.applist
+net.stargw.contacts
 net.stargw.fat
+net.stargw.contactsimport
+net.stargw.applist
+net.stargw.fok
