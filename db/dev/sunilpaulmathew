@@ -1,9 +1,9 @@
-com.sunilpaulmathew.snotz
-com.sunilpaulmathew.translator
-com.sunilpaulmathew.debloater
-com.smartpack.busyboxinstaller
 in.sunilpaulmathew.izzyondroid
-com.apk.editor
-com.smartpack.packagemanager
-com.smartpack.kernelmanager
+com.smartpack.busyboxinstaller
 in.sunilpaulmathew.ashell
+com.smartpack.kernelmanager
+com.sunilpaulmathew.translator
+com.sunilpaulmathew.snotz
+com.sunilpaulmathew.debloater
+com.smartpack.packagemanager
+com.apk.editor
