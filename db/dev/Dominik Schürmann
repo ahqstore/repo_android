@@ -1,5 +1,5 @@
-org.sufficientlysecure.viewer
-org.sufficientlysecure.keychain
-org.shortcuts
-org.birthdayadapter
 org.sufficientlysecure.ical
+org.birthdayadapter
+org.shortcuts
+org.sufficientlysecure.keychain
+org.sufficientlysecure.viewer
