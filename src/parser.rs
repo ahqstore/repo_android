@@ -229,6 +229,7 @@ fn get_imp_data(mut meta: Package) -> Option<ImpData> {
         min = x.min.unwrap_or(30);
 
         abi = abis.into_iter()
+          .filter(|x| ["x86", "x86_64", "armeabi-v7a", "arm64-v8a"].contains(&x.as_str()))
           .map(|x| match x.as_str() {
             "arm64-v8a" => AndroidAbi::Aarch64,
             "armeabi-v7a" => AndroidAbi::Armv7,
