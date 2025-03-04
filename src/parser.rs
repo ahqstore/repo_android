@@ -88,7 +88,7 @@ impl Map {
       .as_bytes(),
     );
 
-    let (app_str, res) = app.export();
+    let (_, res) = app.export();
 
     let path = format!("./db/apps/{}.json", &app.appId);
 
@@ -100,6 +100,7 @@ impl Map {
 
     app.appId = format!("f:{}", app.appId);
     app.authorId = format!("f:{}", app.authorId);
+    let app_str = serde_json::to_string(&app).unwrap();
 
     println!("✅ Adding {}", &app.appId);
 
