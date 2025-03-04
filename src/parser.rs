@@ -1,4 +1,4 @@
-use ahqstore_types::{AHQStoreApplication, AppRepo, DownloadUrl, InstallerFormat, InstallerOptions, InstallerOptionsAndroid};
+use ahqstore_types::{AHQStoreApplication, AndroidAbi, AppRepo, DownloadUrl, InstallerFormat, InstallerOptions, InstallerOptionsAndroid};
 use std::{
   collections::HashMap, fs::{self, File}, io::Write
 };
@@ -59,12 +59,12 @@ impl Map {
   fn add_author(&mut self, author: &str, app_id: &str) {
     let file = format!("./db/dev/{}", author);
     let mut val = fs::read_to_string(&file).unwrap_or("".to_string());
-    val.push_str(&format!("{}\n", &app_id));
+    val.push_str(&format!("f:{}\n", &app_id));
 
     let _ = fs::write(&file, val);
   }
 
-  fn add(&mut self, app: AHQStoreApplication) {
+  fn add(&mut self, mut app: AHQStoreApplication) {
     if self.entries >= 100_000 {
       self.new_file();
     }
@@ -79,26 +79,31 @@ impl Map {
 
     let _ = self
       .c_file
-      .write(format!("\"{}\":\"{}\"", app.appDisplayName, app.appId).as_bytes());
+      .write(format!("\"{}\":\"f:{}\"", app.appDisplayName, app.appId).as_bytes());
     let _ = self.search.write(
       format!(
         "{{\"name\": {:?}, \"title\": {:?}, \"id\": {:?}}}",
-        app.appDisplayName, app.appShortcutName, app.appId
+        app.appDisplayName, app.appShortcutName, format!("f:{}", app.appId)
       )
       .as_bytes(),
     );
 
     let (app_str, res) = app.export();
 
-    println!("✅ Adding {}", &app.appId);
-
-    let _ = fs::write(format!("./db/apps/{}.json", &app.appId), app_str);
+    let path = format!("./db/apps/{}.json", &app.appId);
 
     let _ = fs::create_dir_all(format!("./db/res/{}", &app.appId));
 
     for (id, bytes) in res {
       let _ = fs::write(format!("./db/res/{}/{}", &app.appId, id), bytes);
     }
+
+    app.appId = format!("f:{}", app.appId);
+    app.authorId = format!("f:{}", app.authorId);
+
+    println!("✅ Adding {}", &app.appId);
+
+    let _ = fs::write(path, app_str);
   }
 
   fn finish(mut self) {
@@ -121,7 +126,7 @@ pub fn parser(meta: Metadata) {
         appId: id,
         appDisplayName: data.name.clone(),
         appShortcutName: data.name,
-        authorId: data.author,
+        authorId: format!("fdroid"),
         description: format!("{}\n{}", data.summary.unwrap_or("".into()), data.desc),
         displayImages: vec![],
         downloadUrls: {
@@ -142,12 +147,14 @@ pub fn parser(meta: Metadata) {
           win32: None,
           winarm: None,
           android: Some(InstallerOptionsAndroid {
-            assetId: 1
+            assetId: 1,
+            abi: data.abi,
+            min_sdk: data.min
           })
         },
         license_or_tos: data.license,
         releaseTagName: "".into(),
-        repo: AppRepo { author: "".into(), repo: data.repo.clone().unwrap_or("".into()) },
+        repo: AppRepo { author: data.author, repo: data.repo.clone().unwrap_or("".into()) },
         resources: {
           let mut res = HashMap::new();
 
@@ -179,8 +186,8 @@ pub struct ImpData {
   pub version: String,
   pub download: String,
   pub license: Option<String>,
-  // TODO: Add MinSdk support to schema
-  pub min: u16,
+  pub min: u32,
+  pub abi: Vec<AndroidAbi>
 }
 
 fn get_imp_data(mut meta: Package) -> Option<ImpData> {
@@ -199,17 +206,37 @@ fn get_imp_data(mut meta: Package) -> Option<ImpData> {
   let mut vint = 0;
   let mut ver = String::from("");
   let mut download = String::from("");
+  let mut abi = vec![];
 
   let mut min = 0;
 
   for (v, data) in meta.versions {
     if let Some(x) = data.manifest.info {
+      let abis = data.manifest.abi.unwrap_or_else(|| {
+        vec![
+          "arm64-v8a".into(),
+          "armeabi-v7a".into(),
+          "x86".into(),
+          "x86_64".into()
+        ]
+      });
+
       let ve = data.manifest.version;
       if ve >= vint {
         vint = ve;
         ver = v;
         download = format!("https://f-droid.org/repo{}", data.file.name);
         min = x.min.unwrap_or(30);
+
+        abi = abis.into_iter()
+          .map(|x| match x.as_str() {
+            "arm64-v8a" => AndroidAbi::Aarch64,
+            "armeabi-v7a" => AndroidAbi::Armv7,
+            "x86" => AndroidAbi::X86,
+            "x86_64" => AndroidAbi::X64,
+            _ => unreachable!()
+          })
+          .collect();
       }
     }
   }
@@ -219,6 +246,6 @@ fn get_imp_data(mut meta: Package) -> Option<ImpData> {
   }
 
   Some(
-    ImpData { author, desc, license, icon, name, repo, summary, version: ver, download, min }
+    ImpData { author, desc, license, icon, name, repo, summary, version: ver, download, min, abi }
   )
 }

@@ -40,6 +40,8 @@ pub struct PackageVersion {
 pub struct Manifest {
   #[serde(rename = "versionCode")]
   pub version: u64,
+  #[serde(rename = "nativecode")]
+  pub abi: Option<Vec<String>>,
   #[serde(rename = "usesSdk")]
   pub info: Option<ManifestInfo>,
   #[serde(rename = "releaseChannels")]
@@ -49,7 +51,7 @@ pub struct Manifest {
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ManifestInfo {
   #[serde(rename = "minSdkVersion")]
-  pub min: Option<u16>
+  pub min: Option<u32>
 }
 
 #[derive(Debug, Serialize, Deserialize)]
