@@ -118,6 +118,8 @@ pub fn parser(meta: Metadata) {
   let _ = fs::remove_dir_all("./db");
   let _ = fs::create_dir_all("./db");
 
+  fs::copy("./home.json", "./db/home.json").unwrap();
+
   let mut map = Map::new();
 
   for (id, meta) in meta.packages {
