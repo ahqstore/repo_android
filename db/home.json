@@ -1,1 +1,10 @@
-[]
+{
+  "splash": null,
+  "home": [
+    ["Keyboard", ["f:helium314.keyboard"]],
+    [
+      "Internet",
+      ["f:net.thunderbird.android", "f:net.thunderbird.android.beta"]
+    ]
+  ]
+}
