@@ -22,7 +22,7 @@ impl Map {
     let _ = fs::create_dir_all("./db/res");
 
     let mut file = File::create("./db/map/1.json").unwrap();
-    let _ = file.write(b"{");
+    let _ = file.write(b"[");
 
     let mut search = File::create("./db/search/1.json").unwrap();
     let _ = search.write(b"[");
@@ -38,7 +38,7 @@ impl Map {
   fn close_file(&mut self) {
     let _ = self.search.write_all(b"]");
     let _ = self.search.flush();
-    let _ = self.c_file.write_all(b"}");
+    let _ = self.c_file.write_all(b"]");
     let _ = self.c_file.flush();
   }
 
@@ -48,7 +48,7 @@ impl Map {
     self.close_file();
 
     let mut map = File::create("./db/map/1.json").unwrap();
-    let _ = map.write(b"{");
+    let _ = map.write(b"[");
 
     let mut search = File::create("./db/map/1.json").unwrap();
     let _ = search.write(b"[");
@@ -80,7 +80,7 @@ impl Map {
 
     let _ = self
       .c_file
-      .write(format!("{}:\"f:{}\"", to_string(&app.appDisplayName).unwrap(), app.appId).as_bytes());
+      .write(format!("\"f:{}\"", app.appId).as_bytes());
     let _ = self.search.write(
       format!(
         "{{\"name\": {}, \"title\": {}, \"id\": {:?}}}",
