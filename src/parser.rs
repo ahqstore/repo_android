@@ -80,7 +80,7 @@ impl Map {
 
     let _ = self
       .c_file
-      .write(format!("\"{}\":\"f:{}\"", to_string(&app.appDisplayName).unwrap(), app.appId).as_bytes());
+      .write(format!("{}:\"f:{}\"", to_string(&app.appDisplayName).unwrap(), app.appId).as_bytes());
     let _ = self.search.write(
       format!(
         "{{\"name\": {}, \"title\": {}, \"id\": {:?}}}",
