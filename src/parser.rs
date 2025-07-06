@@ -1,4 +1,5 @@
 use ahqstore_types::{AHQStoreApplication, AndroidAbi, AppRepo, DownloadUrl, InstallerFormat, InstallerOptions, InstallerOptionsAndroid};
+use serde_json::to_string;
 use std::{
   collections::HashMap, fs::{self, File}, io::Write
 };
@@ -79,11 +80,11 @@ impl Map {
 
     let _ = self
       .c_file
-      .write(format!("\"{}\":\"f:{}\"", app.appDisplayName, app.appId).as_bytes());
+      .write(format!("\"{}\":\"f:{}\"", to_string(app.appDisplayName).unwrap(), app.appId).as_bytes());
     let _ = self.search.write(
       format!(
-        "{{\"name\": {:?}, \"title\": {:?}, \"id\": {:?}}}",
-        app.appDisplayName, app.appShortcutName, format!("f:{}", app.appId)
+        "{{\"name\": {}, \"title\": {}, \"id\": {:?}}}",
+        to_string(app.appDisplayName).unwrap(), to_string(app.appShortcutName).unwrap(), format!("f:{}", app.appId)
       )
       .as_bytes(),
     );
