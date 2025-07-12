@@ -1,10 +1,15 @@
 {
   "splash": null,
   "home": [
-    ["Keyboard", ["f:helium314.keyboard"]],
+    ["Casual", ["f:helium314.keyboard", "f:com.dede.android_eggs"]],
     [
       "Internet",
-      ["f:net.thunderbird.android", "f:net.thunderbird.android.beta"]
+      [
+        "f:de.baumann.browser",
+        "f:net.thunderbird.android",
+        "f:proton.android.pass.fdroid",
+        "f:ch.protonvpn.android"
+      ]
     ]
   ]
 }

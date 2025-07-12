@@ -129,14 +129,14 @@ pub fn parser(meta: Metadata) {
         appId: id,
         appDisplayName: data.name.clone(),
         appShortcutName: data.name,
-        authorId: format!("fdroid"),
+        authorId: format!("1"),
         description: format!("{}\n{}", data.summary.unwrap_or("".into()), data.desc),
         displayImages: vec![],
         downloadUrls: {
           let mut m = HashMap::new();
 
           m.insert(1, DownloadUrl {
-            asset: "".into(),
+            asset: "url".into(),
             installerType: InstallerFormat::AndroidApkZip,
             url: data.download
           });
