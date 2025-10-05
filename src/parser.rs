@@ -168,7 +168,8 @@ pub fn parser(meta: Metadata) {
         site: None,
         source: data.repo,
         verified: false,
-        version: data.version,
+        usrVersion: Some(data.version),
+        version: 0
       });
     } else {
       println!("⚠️ Could not read metadata of {id}");
